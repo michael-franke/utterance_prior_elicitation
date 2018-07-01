@@ -143,9 +143,7 @@ var mainSliderRating = {
         var filled = exp.currentTrialInViewCounter * (180 / exp.views_seq[exp.currentViewCounter].trials);
         $('#filled').css('width', filled);
 	
-		
 		var sliderTouched = _.map(_.range(words.length), function(i) { $('#'+words[i]).val();;});
-		console.log(sliderTouched);
 		
         // checks if the slider has been changed
 //        response.on('change', function() {
