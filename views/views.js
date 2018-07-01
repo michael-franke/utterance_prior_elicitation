@@ -118,16 +118,35 @@ var mainSliderRating = {
         var response;
         $('#main').html(Mustache.render(view.template, {
             word1: exp.trial_info.main_trials[CT].words[0],
-			word2: exp.trial_info.main_trials[CT].words[1]
+			word2: exp.trial_info.main_trials[CT].words[1],
+			question: "How common (relative to each other) do you think these expressions are?"
         }));
+		
+		var words = _.shuffle(exp.trial_info.main_trials[CT].words);
+		
+		//create table
+		
+		var outstring = "<table id='slidertable' align='center' width = '420px'>"
+		outstring += '<tr><td></td><td width="420px"><div style="float:left;width:40%;">extremely rare</div><div style="float:right;width:40%;text-align:right">extremely common</div></td></tr>'
+		for (var i = 0; i < words.length; i++) {
+			console.log("here")
+			outstring += '<tr><td>' + words[i] + '</td><td><input type="range" id="' + words[i] + '" class="slider-response" min="0" max="100"value="50"/></td></tr>'	
+		}
+	    outstring += '</table>'
+		
+		console.log(outstring);
+		$('#tablecontainer').html(outstring);
+		
         startingTime = Date.now();
-        response = $('#response');
         
 		// update the progress bar based on how many trials there are in this round
         var filled = exp.currentTrialInViewCounter * (180 / exp.views_seq[exp.currentViewCounter].trials);
         $('#filled').css('width', filled);
 	
-
+		
+		var sliderTouched = _.map(_.range(words.length), function(i) { $('#'+words[i]).val();;});
+		console.log(sliderTouched);
+		
         // checks if the slider has been changed
 //        response.on('change', function() {
 //            $('#next').removeClass('nodisplay');
@@ -136,6 +155,7 @@ var mainSliderRating = {
 //            $('#next').removeClass('nodisplay');
 //        });
 
+		
         $('#next').on('click', function() {
             RT = Date.now() - startingTime; // measure RT before anything else
             trial_data = {
@@ -143,9 +163,9 @@ var mainSliderRating = {
                 trial_number: CT+1,
                 RT: RT
             };
-			_.map(_.range(exp.trial_info.main_trials[CT].words.length),
+			_.map(_.range(words.length),
 				  function(i) {
-					trial_data[exp.trial_info.main_trials[CT].words[i]] = $('#'+exp.trial_info.main_trials[CT].words[i]).val();
+					trial_data[words[i]] = $('#'+words[i]).val();
 				  }
 				 );
             exp.trial_data.push(trial_data);
