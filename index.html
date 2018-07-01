@@ -30,7 +30,6 @@
 		
 		<!-- local trial_info files -->
 		<script src="trial_info/main_trials.js"></script>
-		<script src="trial_info/practice_trials.js"></script>
 
 		<!-- views -->
 		<script src="views/views.js"></script>
@@ -125,12 +124,14 @@
 		</div>
 		</script>
 
-		<!-- main view (buttons response) -->
-		<script id="main-view" type="x-tmpl-mustache">
+		<!-- Trial view (slider response) -->
+		<script id="trial-view-slider-response" type="x-tmpl-mustache">
 		<div class="view">
-		<div class="picture", align = "center">
-			<img src={{picture}} alt="a picture" height="100" width="100">
+		<div class="progress-bar-container">
+			<p>progress</p>
+			<div class="progress-bar"><span id='filled'><span></div>
 		</div>
+		<div class="clearfix"></div>
 
 		<p class="question">
 		{{# question }}
@@ -138,13 +139,14 @@
 		{{/ question }}
 		</p>
 
-		<p class="answer-container">
-			<label for="yes" class="button-answer">{{ option1 }}</label>
-			<input type="radio" name="answer" id="yes" value={{ option1 }} />
-			<input type="radio" name="answer" id="no" value={{ option2 }} />
-			<label for="no" class="button-answer">{{option2}}</label>
+		<p class="answer-container slider-container">
+			<span class="unnatural">{{ word1 }}</span>
+			<input type="range" id="{{ word1 }}" class="slider-response" min="0" max="100" value="50"/>
+			<br>
+			<span class="unnatural">{{ word2 }}</span>
+			<input type="range" id="{{ word2 }}" class="slider-response" min="0" max="100" value="50"/>
 		</p>
-
+		<button id="next">Next</button>
 		</div>
 		</script>
 

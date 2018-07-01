@@ -109,46 +109,52 @@ var beginMainExp = {
     trials: 1
 };
 
-var main = {
-    name: 'main',
-    // render function renders the view
+var mainSliderRating = {
     render : function(CT) {
-        
-        // fill variables in view-template
-        var viewTemplate = $('#main-view').html();
-        $('#main').html(Mustache.render(viewTemplate, {
-            question: exp.trial_info.main_trials[CT].question,
-            option1:  exp.trial_info.main_trials[CT].option1,
-            option2:  exp.trial_info.main_trials[CT].option2,
-            picture:  exp.trial_info.main_trials[CT].picture
+        var view = {};
+        view.name = 'trial',
+        view.template = $('#trial-view-slider-response').html();
+        view.response = $('#response').html();
+        var response;
+        $('#main').html(Mustache.render(view.template, {
+            word1: exp.trial_info.main_trials[CT].words[0],
+			word2: exp.trial_info.main_trials[CT].words[1]
         }));
+        startingTime = Date.now();
+        response = $('#response');
         
-        // update the progress bar based on how many trials there are in this round
+		// update the progress bar based on how many trials there are in this round
         var filled = exp.currentTrialInViewCounter * (180 / exp.views_seq[exp.currentViewCounter].trials);
         $('#filled').css('width', filled);
+	
 
-        // event listener for buttons; when an input is selected, the response
-        // and additional information are stored in exp.trial_info
-        $('input[name=answer]').on('change', function() {
+        // checks if the slider has been changed
+//        response.on('change', function() {
+//            $('#next').removeClass('nodisplay');
+//        });
+//        response.on('click', function() {
+//            $('#next').removeClass('nodisplay');
+//        });
+
+        $('#next').on('click', function() {
             RT = Date.now() - startingTime; // measure RT before anything else
             trial_data = {
-                trial_type: "mainForcedChoice",
-                trial_number: CT + 1,
-                question: exp.trial_info.main_trials[CT].question,
-                option1:  exp.trial_info.main_trials[CT].option1,
-                option2:  exp.trial_info.main_trials[CT].option2,
-                option_chosen: $('input[name=answer]:checked').val(),
+                trial_type: "mainSliderRating",
+                trial_number: CT+1,
                 RT: RT
             };
+			_.map(_.range(exp.trial_info.main_trials[CT].words.length),
+				  function(i) {
+					trial_data[exp.trial_info.main_trials[CT].words[i]] = $('#'+exp.trial_info.main_trials[CT].words[i]).val();
+				  }
+				 );
             exp.trial_data.push(trial_data);
             exp.findNextView();
         });
-        
-        // record trial starting time
-        startingTime = Date.now();
-        
+
+        return view;
     },
-	trials : 4
+    trials: 2
 };
 
 var postTest = {
