@@ -123,35 +123,35 @@ var mainSliderRating = {
         }));
 		
 		var words = _.shuffle(exp.trial_info.main_trials[CT].words);
+		var responses = _.map(words, function(w) {return 0});
+		
+		onSliderChange = function(i ) {
+			console.log("slider " + i + " changed!")
+			responses[i] = 1
+			$('#'+words[i] + ' -webkit-slider-thumb').css('background', 'orange'); // why is this not working?
+			if (_.sum(responses) == words.length) {
+				console.log("ready!")
+				$('#next').removeClass('nodisplay');
+			}
+		}
 		
 		//create table
 		
-		var outstring = "<table id='slidertable' align='center' width = '420px'>"
+		var outstring = "<table id='slidertable' align='center' width = '600px'>"
 		outstring += '<tr><td></td><td width="420px"><div style="float:left;width:40%;">extremely rare</div><div style="float:right;width:40%;text-align:right">extremely common</div></td></tr>'
 		for (var i = 0; i < words.length; i++) {
-			console.log("here")
-			outstring += '<tr><td>' + words[i] + '</td><td><input type="range" id="' + words[i] + '" class="slider-response" min="0" max="100"value="50"/></td></tr>'	
+			outstring += '<tr height="35px"><td align="right" width="130px"><b>' + words[i] + '</b></td><td><input type="range" id="' + words[i] + '" class="slider-response" min="0" max="100"value="50"onchange="onSliderChange(' + i + ')"onclick="onSliderChange(' + i + ')"/></td></tr>'	
 		}
 	    outstring += '</table>'
 		
-		console.log(outstring);
 		$('#tablecontainer').html(outstring);
-		
-        startingTime = Date.now();
+	
         
 		// update the progress bar based on how many trials there are in this round
         var filled = exp.currentTrialInViewCounter * (180 / exp.views_seq[exp.currentViewCounter].trials);
         $('#filled').css('width', filled);
 	
-		var sliderTouched = _.map(_.range(words.length), function(i) { $('#'+words[i]).val();;});
-		
-        // checks if the slider has been changed
-//        response.on('change', function() {
-//            $('#next').removeClass('nodisplay');
-//        });
-//        response.on('click', function() {
-//            $('#next').removeClass('nodisplay');
-//        });
+		startingTime = Date.now();	
 
 		
         $('#next').on('click', function() {

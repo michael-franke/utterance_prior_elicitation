@@ -1,4 +1,4 @@
 var main_trials = [
-	{words: ["foo", "bar"]},
-	{words: ["bubu", "kiki", "tugu"]},
+	{words: ["all", "none", "most", "the majority", "few"]},
+	{words: ["plausible", "implausible", "not plausible", "not implausible", "reasonable", "not reasonable", "not unreasonable", "unreasonable"]},
 ];
