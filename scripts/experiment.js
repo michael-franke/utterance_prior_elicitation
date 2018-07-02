@@ -24,10 +24,10 @@ exp.customize = function() {
 
     // adds progress bars to the views listed
     // view's name is the same as object's name
-    this.progress_bar_in = ['main'];
+    this.progress_bar_in = ['mainSliderRating'];
     // this.progress_bar_in = ['practice', 'main'];
     // styles: chunks, separate or default
     this.progress_bar_style = 'default';
     // the width of the progress bar or a single chunk
-    this.progress_bar_width = 100;
+    this.progress_bar_width = 180;
 };

@@ -3,7 +3,7 @@ var intro = {
     // introduction title
     "title": "Welcome!",
     // introduction text
-    "text": "Thank you for participating in our study. In this study, you will see pictures and click on buttons.",
+    "text": "Thank you for participating in our study. In this study, you will see lists of expressions. We ask to you rate how frequent you think they are.",
     // introduction's slide proceeding button text
     "buttonText": "Begin experiment",
     // render function renders the view
@@ -31,9 +31,9 @@ var instructions = {
     // instruction's title
     "title": "Instructions",
     // instruction's text
-    "text": "On each trial, you will see a question and two response options. Please select the response option you like most. We start with two practice trials.",
+    "text": "On each trial, you will see a number of expressions. Please adjust a slider for each expression based on how frequent you think that expression is, in contrast to the other expressions presented on the same screen. We also show a sentence frame where each of the candidate expressions might occur in. Please ask yourself how frequently you would expect to hear each expression in that sentence frame. <br> Please use the whole range of slider values and please try to indicate also small differences between expressions, according to your intuition. <br> Notice that you can only advance to the next screen after you have clicked on or moved every slider.",
     // instuction's slide proceeding button text
-    "buttonText": "Go to practice trial",
+    "buttonText": "Start experiment!",
     render: function() {
 
         viewTemplate = $("#instructions-view").html();
@@ -52,63 +52,6 @@ var instructions = {
     trials: 1
 };
 
-var practice = {
-    name: 'practice',
-    "title": "Practice trial",
-    // render function renders the view
-    render: function (CT) {
-
-        viewTemplate = $("#practice-view").html();
-        $('#main').html(Mustache.render(viewTemplate, {
-        title: this.title,
-        question: exp.trial_info.practice_trials[CT].question,
-        option1: exp.trial_info.practice_trials[CT].option1,
-        option2: exp.trial_info.practice_trials[CT].option2,
-        picture: exp.trial_info.practice_trials[CT].picture
-        }));
-        startingTime = Date.now();
-        // attaches an event listener to the yes / no radio inputs
-        // when an input is selected a response property with a value equal to the answer is added to the trial object
-        // as well as a readingTimes property with value - a list containing the reading times of each word
-        $('input[name=answer]').on('change', function() {
-            RT = Date.now() - startingTime; // measure RT before anything else
-            trial_data = {
-                trial_type: "practice",
-                trial_number: CT+1,
-                question: exp.trial_info.practice_trials[CT].question,
-                option1: exp.trial_info.practice_trials[CT].option1,
-                option2: exp.trial_info.practice_trials[CT].option2,
-                option_chosen: $('input[name=answer]:checked').val(),
-                RT: RT
-            };
-            exp.trial_data.push(trial_data)
-            exp.findNextView();
-        });
-
-    },
-    trials: 2
-};
-
-var beginMainExp = {
-    name: 'beginMainExp',
-    "text": "Now that you have acquainted yourself with the procedure of the task, the actual experiment will begin.",
-    // render function renders the view
-    render: function() {
-
-        viewTemplate = $('#begin-exp-view').html();
-        $('#main').html(Mustache.render(viewTemplate, {
-            text: this.text
-        }));
-
-        // moves to the next view
-        $('#next').on('click', function(e) {
-            exp.findNextView();
-        });
-
-    },
-    trials: 1
-};
-
 var mainSliderRating = {
     render : function(CT) {
         var view = {};
@@ -119,18 +62,17 @@ var mainSliderRating = {
         $('#main').html(Mustache.render(view.template, {
             word1: exp.trial_info.main_trials[CT].words[0],
 			word2: exp.trial_info.main_trials[CT].words[1],
-			question: "How common (relative to each other) do you think these expressions are?"
+			question: "How common (relative to each other) do you think these expressions are in a sentence frame like the one below?",
+			sentence: exp.trial_info.main_trials[CT].sentence
         }));
 		
 		var words = _.shuffle(exp.trial_info.main_trials[CT].words);
 		var responses = _.map(words, function(w) {return 0});
 		
 		onSliderChange = function(i ) {
-			console.log("slider " + i + " changed!")
 			responses[i] = 1
 			$('#'+words[i] + ' -webkit-slider-thumb').css('background', 'orange'); // why is this not working?
 			if (_.sum(responses) == words.length) {
-				console.log("ready!")
 				$('#next').removeClass('nodisplay');
 			}
 		}
@@ -148,7 +90,7 @@ var mainSliderRating = {
 	
         
 		// update the progress bar based on how many trials there are in this round
-        var filled = exp.currentTrialInViewCounter * (180 / exp.views_seq[exp.currentViewCounter].trials);
+        var filled = exp.currentTrialInViewCounter * (60 / exp.views_seq[exp.currentViewCounter].trials);
         $('#filled').css('width', filled);
 	
 		startingTime = Date.now();	
@@ -172,7 +114,7 @@ var mainSliderRating = {
 
         return view;
     },
-    trials: 2
+    trials: main_trials.length
 };
 
 var postTest = {
