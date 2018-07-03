@@ -52,14 +52,10 @@ var instructions = {
     trials: 1
 };
 
-var mainSliderRating = {
+var main = {
     render : function(CT) {
-        var view = {};
-        view.name = 'trial',
-        view.template = $('#trial-view-slider-response').html();
-        view.response = $('#response').html();
-        var response;
-        $('#main').html(Mustache.render(view.template, {
+        var viewTemplate = $('#main-view').html();
+        $('#main').html(Mustache.render(viewTemplate, {
             word1: exp.trial_info.main_trials[CT].words[0],
 			word2: exp.trial_info.main_trials[CT].words[1],
 			question: "How common (relative to each other) do you think these expressions are in a sentence frame like the one below?",
@@ -89,9 +85,9 @@ var mainSliderRating = {
 		$('#tablecontainer').html(outstring);
 	
         
-		// update the progress bar based on how many trials there are in this round
-        var filled = exp.currentTrialInViewCounter * (60 / exp.views_seq[exp.currentViewCounter].trials);
-        $('#filled').css('width', filled);
+//		// update the progress bar based on how many trials there are in this round
+//        var filled = exp.currentTrialInViewCounter * (60 / exp.views_seq[exp.currentViewCounter].trials);
+//        $('#filled').css('width', filled);
 	
 		startingTime = Date.now();	
 
@@ -114,7 +110,7 @@ var mainSliderRating = {
 
         return view;
     },
-    trials: main_trials.length
+    trials: 3
 };
 
 var postTest = {

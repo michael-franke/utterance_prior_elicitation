@@ -8,26 +8,22 @@ exp.customize = function() {
     // specify view order
     this.views_seq = [intro, 
                      instructions,
-//                     practice,
-//                     beginMainExp,
-                     mainSliderRating,
-                     /*loop([practice,
-                     beginMainExp,
-                     main], 2),*/
+                     main,
                      postTest,
                      thanks];
 
     // prepare information about trials (procedure)
     // randomize main trial order, but keep practice trial order fixed
     this.trial_info.main_trials = _.shuffle(main_trials);
-//    this.trial_info.practice_trials = practice_trials;
 
     // adds progress bars to the views listed
     // view's name is the same as object's name
-    this.progress_bar_in = ['mainSliderRating'];
-    // this.progress_bar_in = ['practice', 'main'];
+	// this.progress_bar_in = ['practice', 'main'];
+    this.progress_bar_in = ['instructions', 'main'];
+
     // styles: chunks, separate or default
     this.progress_bar_style = 'default';
-    // the width of the progress bar or a single chunk
-    this.progress_bar_width = 180;
+
+	// the width of the progress bar or a single chunk
+    this.progress_bar_width = 100;
 };
