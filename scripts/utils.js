@@ -66,7 +66,6 @@ exp.initProgressBar = function() {
     // creates a new progress bar(s) for each view that has it and updates it
     progressBar.update = function() {
         addToDOM();
-        console.log("here!")
         var progressBars = $('.progress-bar');
         var div, filledElem, filledPart;
 

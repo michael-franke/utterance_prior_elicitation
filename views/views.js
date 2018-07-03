@@ -53,8 +53,10 @@ var instructions = {
 };
 
 var main = {
+	name : 'main',
     render : function(CT) {
-        var viewTemplate = $('#main-view').html();
+        
+		var viewTemplate = $('#main-view').html();
         $('#main').html(Mustache.render(viewTemplate, {
             word1: exp.trial_info.main_trials[CT].words[0],
 			word2: exp.trial_info.main_trials[CT].words[1],
@@ -65,7 +67,7 @@ var main = {
 		var words = _.shuffle(exp.trial_info.main_trials[CT].words);
 		var responses = _.map(words, function(w) {return 0});
 		
-		onSliderChange = function(i ) {
+		onSliderChange = function(i) {
 			responses[i] = 1
 			$('#'+words[i] + ' -webkit-slider-thumb').css('background', 'orange'); // why is this not working?
 			if (_.sum(responses) == words.length) {
@@ -84,13 +86,7 @@ var main = {
 		
 		$('#tablecontainer').html(outstring);
 	
-        
-//		// update the progress bar based on how many trials there are in this round
-//        var filled = exp.currentTrialInViewCounter * (60 / exp.views_seq[exp.currentViewCounter].trials);
-//        $('#filled').css('width', filled);
-	
 		startingTime = Date.now();	
-
 		
         $('#next').on('click', function() {
             RT = Date.now() - startingTime; // measure RT before anything else
@@ -107,10 +103,8 @@ var main = {
             exp.trial_data.push(trial_data);
             exp.findNextView();
         });
-
-        return view;
     },
-    trials: 3
+    trials: main_trials.length
 };
 
 var postTest = {
