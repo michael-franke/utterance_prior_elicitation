@@ -67,20 +67,20 @@ var main = {
 		var words = _.shuffle(exp.trial_info.main_trials[CT].words);
 		var responses = _.map(words, function(w) {return 0});
 		
-		onSliderChange = function(i) {
-			responses[i] = 1
-			$('#'+words[i] + ' -webkit-slider-thumb').css('background', 'orange'); // why is this not working?
+		onSliderChange = function(event, i) {
+            event.target.classList.add('changed');
+			responses[i] = 1;
 			if (_.sum(responses) == words.length) {
 				$('#next').removeClass('nodisplay');
 			}
-		}
+		};
 		
 		//create table
 		
 		var outstring = "<table id='slidertable' align='center' width = '600px'>"
 		outstring += '<tr><td></td><td width="420px"><div style="float:left;width:40%;">extremely rare</div><div style="float:right;width:40%;text-align:right">extremely common</div></td></tr>'
 		for (var i = 0; i < words.length; i++) {
-			outstring += '<tr height="35px"><td align="right" width="130px"><b>' + words[i] + '</b></td><td><input type="range" id="' + words[i] + '" class="slider-response" min="0" max="100"value="50"onchange="onSliderChange(' + i + ')"onclick="onSliderChange(' + i + ')"/></td></tr>'	
+			outstring += '<tr height="35px"><td align="right" width="130px"><b>' + words[i] + '</b></td><td><input type="range" id="' + words[i] + '" class="slider-response" min="0" max="100"value="50"onchange="onSliderChange(event, ' + i + ')"onclick="onSliderChange(event, ' + i + ')"/></td></tr>'
 		}
 	    outstring += '</table>'
 		

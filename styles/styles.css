@@ -217,11 +217,13 @@ input[type=range]::-moz-range-thumb {
     width: 16px;
 }
 
-input[type="range"]:focus::-webkit-slider-thumb {
+input[type="range"]:focus::-webkit-slider-thumb,
+input[type="range"].changed::-webkit-slider-thumb {
     background: orange;
 }
 
-input[type="range"]:focus::-moz-range-thumb {
+input[type="range"]:focus::-moz-range-thumb,
+input[type="range"].changed::-moz-range-thumb {
     background: orange;
 }
 
