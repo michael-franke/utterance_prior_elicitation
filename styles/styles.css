@@ -218,12 +218,12 @@ input[type=range]::-moz-range-thumb {
 }
 
 input[type="range"]:focus::-webkit-slider-thumb,
-input[type="range"].changed::-webkit-slider-thumb {
+input[type="range"].thumb-orange::-webkit-slider-thumb {
     background: orange;
 }
 
 input[type="range"]:focus::-moz-range-thumb,
-input[type="range"].changed::-moz-range-thumb {
+input[type="range"].thumb-orange::-moz-range-thumb {
     background: orange;
 }
 
